@@ -59,28 +59,31 @@ class FlutterRoundedDayPicker extends StatelessWidget {
   /// Creates a day picker.
   ///
   /// Rarely used directly. Instead, typically used as part of a [MonthPicker].
-  FlutterRoundedDayPicker(
-      {Key? key,
-      required this.selectedDate,
-      required this.currentDate,
-      required this.onChanged,
-      required this.firstDate,
-      required this.lastDate,
-      required this.displayedMonth,
-      this.selectableDayPredicate,
-      this.dragStartBehavior = DragStartBehavior.start,
-      required this.era,
-      this.locale,
-      this.fontFamily,
-      required this.borderRadius,
-      this.style,
-      this.customWeekDays,
-      this.builderDay,
-      this.listDateDisabled,
-      this.onTapDay})
-      : assert(!firstDate.isAfter(lastDate)),
+  FlutterRoundedDayPicker({
+    Key? key,
+    required this.selectedDate,
+    required this.currentDate,
+    required this.onChanged,
+    required this.firstDate,
+    required this.lastDate,
+    required this.displayedMonth,
+    this.selectableDayPredicate,
+    this.dragStartBehavior = DragStartBehavior.start,
+    required this.era,
+    this.locale,
+    this.fontFamily,
+    required this.borderRadius,
+    this.style,
+    this.customWeekDays,
+    this.builderDay,
+    this.listDateDisabled,
+    this.onTapDay,
+    this.onVerticalDragEnd,
+  })  : assert(!firstDate.isAfter(lastDate)),
 //        assert(selectedDate.isAfter(firstDate) || selectedDate.isAtSameMomentAs(firstDate)),
         super(key: key);
+
+  final void Function(DragEndDetails)? onVerticalDragEnd;
 
   /// The currently selected date.
   ///
@@ -372,6 +375,7 @@ class FlutterRoundedDayPicker extends StatelessWidget {
 
         dayWidget = GestureDetector(
           behavior: HitTestBehavior.opaque,
+          onVerticalDragEnd: onVerticalDragEnd,
           onTap: () {
             bool allow = true;
 
