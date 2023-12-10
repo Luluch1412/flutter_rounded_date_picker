@@ -79,11 +79,15 @@ class FlutterRoundedDayPicker extends StatelessWidget {
     this.listDateDisabled,
     this.onTapDay,
     this.onVerticalDragUpdate,
+    this.onVerticalDragStart,
+    this.onVerticalDragEnd,
   })  : assert(!firstDate.isAfter(lastDate)),
 //        assert(selectedDate.isAfter(firstDate) || selectedDate.isAtSameMomentAs(firstDate)),
         super(key: key);
 
   final void Function(DragUpdateDetails)? onVerticalDragUpdate;
+  final void Function(DragStartDetails)? onVerticalDragStart;
+  final void Function(DragEndDetails)? onVerticalDragEnd;
 
   /// The currently selected date.
   ///
@@ -376,6 +380,8 @@ class FlutterRoundedDayPicker extends StatelessWidget {
         dayWidget = GestureDetector(
           behavior: HitTestBehavior.opaque,
           onVerticalDragUpdate: onVerticalDragUpdate,
+          onVerticalDragEnd: onVerticalDragEnd,
+          onVerticalDragStart: onVerticalDragStart,
           onTap: () {
             bool allow = true;
 
@@ -449,6 +455,7 @@ class FlutterRoundedDayPicker extends StatelessWidget {
           ),
           Flexible(
             child: GridView.custom(
+              physics: NeverScrollableScrollPhysics(),
               gridDelegate: _kDayPickerGridDelegate,
               childrenDelegate: SliverChildListDelegate(
                 labels,
